@@ -1,0 +1,9 @@
+/.python-version
+/small_group_description.csv:Zone.Identifier
+/test.csv:Zone.Identifier
+/train.csv:Zone.Identifier
+/train_target.csv:Zone.Identifier
+/transactions_rosbank.csv
+/transactions_sber.csv
+/transactions_test.csv:Zone.Identifier
+/transactions_train.csv:Zone.Identifier
