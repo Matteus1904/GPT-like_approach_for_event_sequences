@@ -7,3 +7,4 @@
 /transactions_sber.csv
 /transactions_test.csv:Zone.Identifier
 /transactions_train.csv:Zone.Identifier
+/lightning_logs
