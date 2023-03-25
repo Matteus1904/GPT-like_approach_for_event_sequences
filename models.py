@@ -4,7 +4,7 @@ from torch import nn
 import warnings
 from torchmetrics import MeanMetric
 from typing import Tuple, Dict, List, Union
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, accuracy_score
 
 from ptls.nn.seq_encoder.abs_seq_encoder import AbsSeqEncoder
 from ptls.nn import PBL2Norm
@@ -138,11 +138,14 @@ class NextItemPredictionModule(pl.LightningModule):
         loss_gpt = self.loss_gpt(out, labels, is_train_step=False)
         self.valid_gpt_loss(loss_gpt)
 
+        seq_len_mask = batch.seq_len_mask[:, self.hparams.seed_seq_len:-1].bool()
+        seq_len_mask[:, seq_len_mask.sum(dim=1)-1]  = 0
+
         y_pred = self.head(out[:, self.hparams.seed_seq_len:-1, :]).argmax(dim=2)
-        y_pred_masked = y_pred[batch.seq_len_mask[:, self.hparams.seed_seq_len:-1].bool()].cpu()
- 
+        y_pred_masked = y_pred[seq_len_mask.bool()].cpu()
+
         y_true = labels[self.target_col][:, self.hparams.seed_seq_len+1:]
-        y_true_masked = y_true[batch.seq_len_mask[:, self.hparams.seed_seq_len:-1].bool()].cpu()
+        y_true_masked = y_true[seq_len_mask.bool()].cpu()
 
         return y_pred_masked, y_true_masked
 
@@ -151,11 +154,14 @@ class NextItemPredictionModule(pl.LightningModule):
         out = out.payload if isinstance(out, PaddedBatch) else out
         labels = batch.payload
 
+        seq_len_mask = batch.seq_len_mask[:, self.hparams.seed_seq_len:-1].bool()
+        seq_len_mask[:, seq_len_mask.sum(dim=1)-1]  = 0
+
         y_pred = self.head(out[:, self.hparams.seed_seq_len:-1, :]).argmax(dim=2)
-        y_pred_masked = y_pred[batch.seq_len_mask[:, self.hparams.seed_seq_len:-1].bool()].cpu()
- 
+        y_pred_masked = y_pred[seq_len_mask.bool()].cpu()
+
         y_true = labels[self.target_col][:, self.hparams.seed_seq_len+1:]
-        y_true_masked = y_true[batch.seq_len_mask[:, self.hparams.seed_seq_len:-1].bool()].cpu()
+        y_true_masked = y_true[seq_len_mask.bool()].cpu()
 
         return y_pred_masked, y_true_masked
 
