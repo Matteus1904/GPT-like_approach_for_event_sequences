@@ -17,13 +17,13 @@ We address the problem of self-supervised learning for event sequences. By means
 
 ## Repo description
 
-<a target="_blank" href="https://colab.research.google.com/github/Matteus1904/GPT-like_approach_for_event_sequences/blob/master/rosbank_experiments.ipynb">
+* In [`sber_experiments.ipynb`](sber_experiments.ipynb) run of experiments in Sber datasets <a target="_blank" href="https://colab.research.google.com/github/Matteus1904/GPT-like_approach_for_event_sequences/blob/master/sber_experiments.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
-* In [`sber_experiments.ipynb`](sber_experiments.ipynb) run of experiments in Sber datasets
-
-* In [`rosbank_experiments.ipynb`](rosbank_experiments.ipynb) run of experiments in Rosbank datasets
+* In [`rosbank_experiments.ipynb`](rosbank_experiments.ipynb) run of experiments in Rosbank datasets <a target="_blank" href="https://colab.research.google.com/github/Matteus1904/GPT-like_approach_for_event_sequences/blob/master/rosbank_experiments.ipynb">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
 
 * In [`sber_notebook.ipynb`](https://github.com/Matteus1904/GPT-like_approach_for_event_sequences/blob/master/eda/sber_notebook.ipynb) visualizations of Sber dataset
 
