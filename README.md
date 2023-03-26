@@ -13,7 +13,7 @@ __Project team:__
 
 ![alt text](/pics/transfer.png)
 
-## Repo discription
+## Repo description
 
 * In [`sber_experiments.ipynb`](sber_experiments.ipynb) run of experiments in Sber datasets
 
