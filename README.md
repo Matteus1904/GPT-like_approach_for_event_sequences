@@ -32,3 +32,9 @@ We address the problem of self-supervised learning for event sequences. By means
 * In [`models.py`](/models.py) model pipeline, including its layers, architecture and etc
 
 * In [`dataset.py`](/dataset.py) data preprocessing for model usage
+
+
+## Prerequisites
+```commandline
+pip install -r requirements.txt
+```
