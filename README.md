@@ -37,4 +37,12 @@ We address the problem of self-supervised learning for event sequences. By means
 ## Prerequisites
 ```commandline
 pip install -r requirements.txt
+mkdir -p data
+curl -OL https://storage.yandexcloud.net/di-datasets/age-prediction-nti-sbebank-2019.zip
+unzip -j -o age-prediction-nti-sbebank-2019.zip 'data/*.csv' -d data/sberbank
+mv age-prediction-nti-sbebank-2019.zip data/
+mkdir -p data/rosbank
+curl -OL https://storage.yandexcloud.net/di-datasets/rosbank-ml-contest-boosters.pro.zip
+unzip -j -o rosbank-ml-contest-boosters.pro.zip '*.csv' -d data/rosbank
+mv rosbank-ml-contest-boosters.pro.zip data/rosbank/
 ```
