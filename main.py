@@ -212,6 +212,9 @@ if __name__ == '__main__':
 
             df = pd.DataFrame(data)
 
+            _ = open(f'results/stats_repr_{dataset_name}_config_{config_name}.csv', 'w+')
+            _.close()
+
             stats = pd.read_csv(f'results/stats_repr_{dataset_name}_config_{config_name}.csv')
 
             stats = pd.concat([stats, df], ignore_index=True)
@@ -276,6 +279,9 @@ if __name__ == '__main__':
             }
 
             df = pd.DataFrame(data)
+
+            _ = open(f'results/stats_contr_{dataset_name}_config_{config_name}.csv', 'w+')
+            _.close()
 
             stats = pd.read_csv(f'results/stats_contr_{dataset_name}_config_{config_name}.csv')
 
