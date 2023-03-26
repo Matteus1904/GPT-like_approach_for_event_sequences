@@ -13,6 +13,8 @@ __Project team:__
 
 ![alt text](/pics/transfer.png)
 
+We address the problem of self-supervised learning for event sequences. By means of self-supervised learning, we map the sophisticated information from transaction data to a low-dimensional space of fixed-length vectors. We implement embedding pre-training by optimization of representation loss. We implement embedding pre-training by optimization of contrastive loss. We use the obtained embeddings in downstream GPT-like tasks of the next MCC (item) prediction and the next MCC embedding prediction respectively. We experimentally find that usage of pre-trained embeddings of both types outperforms the baselines and the models without pre-training.
+
 ## Repo description
 
 * In [`sber_experiments.ipynb`](sber_experiments.ipynb) run of experiments in Sber datasets
@@ -25,4 +27,4 @@ __Project team:__
 
 * In [`models.py`](/models.py) model pipeline, including its layers, architecture and etc
 
-* [`dataset.py`](/dataset.py) data preprocessing for model usage
+* In [`dataset.py`](/dataset.py) data preprocessing for model usage
