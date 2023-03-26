@@ -36,6 +36,7 @@ We address the problem of self-supervised learning for event sequences. By means
 
 ## Prerequisites
 ```commandline
+git clone https://github.com/Matteus1904/GPT-like_approach_for_event_sequences
 pip install -r requirements.txt
 mkdir -p data
 curl -OL https://storage.yandexcloud.net/di-datasets/age-prediction-nti-sbebank-2019.zip
