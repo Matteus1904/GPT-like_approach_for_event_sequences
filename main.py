@@ -73,35 +73,35 @@ if __name__ == '__main__':
         config_name = sections[config_ind]
 
         # data preprocessing
-        dataset_name = data_conf['dataset_name']
-        data_path = data_conf['data_path']
-        amount_bins = data_conf['amount_bins']
-        validtest_size = data_conf['validtest_size']
-        test_to_valid_share = data_conf['test_to_valid_share']
-        train_batch_size = data_conf['train_batch_size']
-        n_runs = data_conf['n_runs']
+        dataset_name = float(data_conf['dataset_name'])
+        data_path = float(data_conf['data_path'])
+        amount_bins = int(data_conf['amount_bins'])
+        validtest_size = float(data_conf['validtest_size'])
+        test_to_valid_share = float(data_conf['test_to_valid_share'])
+        train_batch_size = int(data_conf['train_batch_size'])
+        n_runs = int(data_conf['n_runs'])
 
         # model hyperparameters
-        mcc_emb_size = data_conf['mcc_emb_size']
-        amount_emb_size = data_conf['amount_emb_size']
-        linear_projection_size = data_conf['linear_projection_size']
-        seq_hidden_size = data_conf['seq_hidden_size']
+        mcc_emb_size = int(data_conf['mcc_emb_size'])
+        amount_emb_size = int(data_conf['amount_emb_size'])
+        linear_projection_size = int(data_conf['linear_projection_size'])
+        seq_hidden_size = int(data_conf['seq_hidden_size'])
 
         # training hyperparameters
-        max_lr_repr = data_conf['max_lr_repr']
-        total_steps_repr = data_conf['total_steps_repr']
-        max_lr_contr = data_conf['max_lr_contr']
-        total_steps_contr = data_conf['total_steps_contr']
-        max_lr_downstream = data_conf['max_lr_downstream']
-        total_steps_downstream = data_conf['total_steps_downstream']
+        max_lr_repr = float(data_conf['max_lr_repr'])
+        total_steps_repr = int(data_conf['total_steps_repr'])
+        max_lr_contr = float(data_conf['max_lr_contr'])
+        total_steps_contr = int(data_conf['total_steps_contr'])
+        max_lr_downstream = float(data_conf['max_lr_downstream'])
+        total_steps_downstream = int(data_conf['total_steps_downstream'])
 
         # other
-        max_epochs_pretrain = data_conf['max_epochs_pretrain']
-        max_epochs_downstream = data_conf['max_epochs_downstream']
+        max_epochs_pretrain = int(data_conf['max_epochs_pretrain'])
+        max_epochs_downstream = int(data_conf['max_epochs_downstream'])
 
-        patience = data_conf['patience']
-        neg_count = data_conf['neg_count']
-        loss_temperature = data_conf['loss_temperature']
+        patience = int(data_conf['patience'])
+        neg_count = int(data_conf['neg_count'])
+        loss_temperature = float(data_conf['loss_temperature'])
 
         source_data = pd.read_csv(data_path)
         if dataset_name == "rosbank":
