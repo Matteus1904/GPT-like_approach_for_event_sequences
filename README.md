@@ -19,11 +19,11 @@ We address the problem of self-supervised learning for event sequences. By means
 
 * In [`sber_experiments.ipynb`](sber_experiments.ipynb) run of experiments in Sber datasets
 
-* In [`rosbank_experiments.ipynb`](https://github.com/Matteus1904/GPT-like_approach_for_event_sequences/blob/master/eda/rosbank_notebook.ipynb) run of experiments in Rosbank datasets
+* In [`rosbank_experiments.ipynb`](rosbank_experiments.ipynb) run of experiments in Rosbank datasets
 
-* In [`sber_notebook.ipynb`](sber_notebook.ipynb) visualizations of Sber dataset
+* In [`sber_notebook.ipynb`](https://github.com/Matteus1904/GPT-like_approach_for_event_sequences/blob/master/eda/sber_notebook.ipynb) visualizations of Sber dataset
 
-* In [`rosbank_notebook.ipynb`](rosbank_notebook.ipynb) visualizations of Rosbank dataset
+* In [`rosbank_notebook.ipynb`](https://github.com/Matteus1904/GPT-like_approach_for_event_sequences/blob/master/eda/rosbank_notebook.ipynb) visualizations of Rosbank dataset
 
 * In [`models.py`](/models.py) model pipeline, including its layers, architecture and etc
 
