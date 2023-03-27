@@ -1,18 +1,14 @@
 import pytorch_lightning as pl
 import torch
 from torch import nn
-import warnings
 from torchmetrics import MeanMetric
-from typing import Tuple, Dict, List, Union
-from sklearn.metrics import f1_score, accuracy_score
+from sklearn.metrics import f1_score
 
 from ptls.nn.seq_encoder.abs_seq_encoder import AbsSeqEncoder
 from ptls.nn import PBL2Norm
-from ptls.data_load.padded_batch import PaddedBatch
-from ptls.custom_layers import StatPooling, GEGLU
-from ptls.nn.seq_step import LastStepEncoder
-from torchmetrics import MeanMetric
 from ptls.frames.bert.losses.query_soft_max import QuerySoftmaxLoss
+from ptls.data_load.padded_batch import PaddedBatch
+from torchmetrics import MeanMetric
 from ptls.data_load.padded_batch import PaddedBatch
 
 
@@ -30,11 +26,12 @@ class Head(nn.Module):
         x = self.head(x)
         return x
 
+
 class NextItemPredictionModule(pl.LightningModule):
-    """GPT2 Language model
+    """Modification of GPT from (https://github.com/dllllb/pytorch-lifestream/blob/main/ptls/frames/gpt/gpt_module.py)
     Original sequence are encoded by `TrxEncoder`.
     Model `seq_encoder` predicts embedding of next transaction.
-    Heads are used to predict each feature class of future transaction.
+    Head is used to predict target feature class of future transaction.
     Parameters
     ----------
     trx_encoder:
@@ -42,6 +39,8 @@ class NextItemPredictionModule(pl.LightningModule):
     seq_encoder:
         Module for sequence processing. Generally this is transformer based encoder. Rnn is also possible
         Should works without sequence reduce
+    target_col:
+        Name of target feature to predict
     head_hidden_size:
         Hidden size of heads for feature prediction
     seed_seq_len:
@@ -187,6 +186,7 @@ class NextItemPredictionModule(pl.LightningModule):
                                  lr=self.hparams.max_lr,
                                  weight_decay=self.hparams.weight_decay,
                                  )
+        
         scheduler = torch.optim.lr_scheduler.OneCycleLR(
             optimizer=optim,
             max_lr=self.hparams.max_lr,
@@ -202,11 +202,11 @@ class NextItemPredictionModule(pl.LightningModule):
         return [optim], [scheduler]
 
 
-class MLMPretrainModule(pl.LightningModule):
-    """Masked Language Model (MLM) from [ROBERTA](https://arxiv.org/abs/1907.11692)
+class GptPretrainContrastiveModule(pl.LightningModule):
+    """Modification of MLM from (https://github.com/dllllb/pytorch-lifestream/blob/main/ptls/frames/bert/modules/mlm_module.py)   
     Original sequence are encoded by `TrxEncoder`.
-    Randomly sampled trx representations are replaced by MASK embedding.
-    Transformer `seq_encoder` reconstruct masked embeddings.
+    For each sequence the last trx representations is replaced by MASK embedding.
+    `seq_encoder` produces hidden states, then head reconstructs masked embeddings.
     The loss function tends to make closer trx embedding and his predict.
     Negative samples are used to avoid trivial solution.
     Parameters
@@ -229,7 +229,7 @@ class MLMPretrainModule(pl.LightningModule):
     pct_start:
         % of total_steps when lr increase
     norm_predict:
-        use l2 norm for transformer output or not
+        use l2 norm for head output or not
     replace_proba:
         probability of masking transaction embedding
     neg_count:
@@ -242,7 +242,7 @@ class MLMPretrainModule(pl.LightningModule):
                  trx_encoder: torch.nn.Module,
                  seq_encoder: AbsSeqEncoder,
                  total_steps: int,
-                 hidden_size: int = None,
+                 head_hidden_size: int = 64,
                  loss_temperature: float = 20.0,
                  max_lr: float = 0.001,
                  weight_decay: float = 0.0,
@@ -260,13 +260,12 @@ class MLMPretrainModule(pl.LightningModule):
         self._seq_encoder = seq_encoder
         self._seq_encoder.is_reduce_sequence = False
 
+        self.head = Head(self._seq_encoder.embedding_size, trx_encoder.output_size, head_hidden_size)
+
         if self.hparams.norm_predict:
             self.fn_norm_predict = PBL2Norm()
 
-        if hidden_size is None:
-            hidden_size = trx_encoder.output_size
-
-        self.token_mask = torch.nn.Parameter(torch.randn(1, 1, hidden_size), requires_grad=True)
+        self.token_mask = torch.nn.Parameter(torch.randn(1, 1, trx_encoder.output_size), requires_grad=True)
 
         self.loss_fn = QuerySoftmaxLoss(temperature=loss_temperature, reduce=False)
 
@@ -318,6 +317,7 @@ class MLMPretrainModule(pl.LightningModule):
 
     def forward(self, z: PaddedBatch):
         out = self._seq_encoder(z)
+        out = PaddedBatch(self.head(out.payload), out.seq_lens)
         if self.hparams.norm_predict:
             out = self.fn_norm_predict(out)
         return out
@@ -329,7 +329,7 @@ class MLMPretrainModule(pl.LightningModule):
         mask_num = mask.int().sum()
         mn = 1 - torch.eye(mask_num, device=mask.device)
         neg_ix = torch.multinomial(mn, self.hparams.neg_count)
-    
+
         b_ix = torch.arange(mask.size(0), device=mask.device).view(-1, 1).expand_as(mask)[mask][neg_ix]
         t_ix = torch.arange(mask.size(1), device=mask.device).view(1, -1).expand_as(mask)[mask][neg_ix]
         return b_ix, t_ix
@@ -339,12 +339,11 @@ class MLMPretrainModule(pl.LightningModule):
         masked_x = self.mask_x(x.payload, x.seq_len_mask, mask)
 
         out = self.forward(PaddedBatch(masked_x, x.seq_lens)).payload
-        
+
         target = x.payload[mask].unsqueeze(1)  # N, 1, H
         predict = out[mask].unsqueeze(1)  # N, 1, H
         neg_ix = self.get_neg_ix(mask)
         negative = out[neg_ix[0], neg_ix[1]]  # N, nneg, H
-        
         loss = self.loss_fn(target, predict, negative)
 
         if is_train_step and self.hparams.log_logits:
@@ -376,11 +375,3 @@ class MLMPretrainModule(pl.LightningModule):
     def validation_epoch_end(self, _):
         self.log(f'mlm/valid_mlm_loss', self.valid_mlm_loss, prog_bar=True)
         # self.valid_mlm_loss reset not required here
-    
-
-class GptPretrainContrastiveModule(MLMPretrainModule):
-    def get_mask(self, attention_mask):
-        last_ind = attention_mask.sum(dim=1) - 1 
-        mask = torch.zeros_like(attention_mask)
-        mask[:, last_ind] = 1
-        return mask.bool()
