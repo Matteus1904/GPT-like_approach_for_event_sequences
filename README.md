@@ -13,7 +13,28 @@ __Project team:__
 
 ![alt text](/pics/transfer.png)
 
-We address the problem of self-supervised learning for event sequences. By means of self-supervised learning, we map the sophisticated information from transaction data to a low-dimensional space of fixed-length vectors. We implement embedding pre-training by optimization of representation loss. We implement embedding pre-training by optimization of contrastive loss. We use the obtained embeddings in downstream GPT-like tasks of the next MCC (item) prediction and the next MCC embedding prediction respectively. We experimentally find that usage of pre-trained embeddings of both types outperforms the baselines and the models without pre-training.
+Self-supervised learning is a powerful technique
+for leveraging large amounts of unlabeled data
+to improve the performance of machine learning
+models, particularly in domains where labeled
+data is scarce or expensive to obtain. In this
+project, we focus on self-supervised learning ap-
+plied to event sequences, specifically transaction
+data, and explore the use of two different pre-
+training approaches for obtaining embeddings:
+classical representations and contrastive represen-
+tations. We demonstrate that both embedding
+models are viable for downstream tasks, specif-
+ically in predicting the next merchant category
+code (MCC) of a transaction. Our experiments
+show that the pre-trained contrastive embeddings
+perform better on less stable data, while the pre-
+trained representation embeddings suit better for
+homogeneous transaction data. These findings
+can help guide the selection of pre-training ap-
+proaches for transactional data, and our work
+opens up opportunities for further exploration of
+self-supervised learning in other domains.
 
 ## Repo description
 
