@@ -48,7 +48,11 @@ unzip -j -o rosbank-ml-contest-boosters.pro.zip '*.csv' -d data/rosbank
 mv rosbank-ml-contest-boosters.pro.zip data/rosbank/
 ```
 
-## Model training
+## Run experiments
+To run the default experiments, use the following command:
 ```
 python main.py
 ```
+It will save the results into `results/stats_contr_{dataset}_config_{config_name}.csv`.
+
+You can run the model with your own hyperparameters — to do that, you can either change the corresponding values in an existing config in `config.ini`, or create your own config in `config.ini` using the same data format and add it after the existing ones.
