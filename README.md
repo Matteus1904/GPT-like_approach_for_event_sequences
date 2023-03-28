@@ -17,21 +17,21 @@ Self-supervised learning is a powerful technique for leveraging large amounts of
 
 ## Repo description
 
-* In [`sber_experiments.ipynb`](sber_experiments.ipynb) run of experiments in Sber datasets <a target="_blank" href="https://colab.research.google.com/github/Matteus1904/GPT-like_approach_for_event_sequences/blob/master/sber_experiments.ipynb">
+* [`sber_experiments.ipynb`](sber_experiments.ipynb) — running experiments on Sber datasets <a target="_blank" href="https://colab.research.google.com/github/Matteus1904/GPT-like_approach_for_event_sequences/blob/master/sber_experiments.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
-* In [`rosbank_experiments.ipynb`](rosbank_experiments.ipynb) run of experiments in Rosbank datasets <a target="_blank" href="https://colab.research.google.com/github/Matteus1904/GPT-like_approach_for_event_sequences/blob/master/rosbank_experiments.ipynb">
+* [`rosbank_experiments.ipynb`](rosbank_experiments.ipynb) — running experiments on Rosbank datasets <a target="_blank" href="https://colab.research.google.com/github/Matteus1904/GPT-like_approach_for_event_sequences/blob/master/rosbank_experiments.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
-* In [`sber_notebook.ipynb`](https://github.com/Matteus1904/GPT-like_approach_for_event_sequences/blob/master/eda/sber_notebook.ipynb) visualizations of Sber dataset
+* [`sber_notebook.ipynb`](https://github.com/Matteus1904/GPT-like_approach_for_event_sequences/blob/master/eda/sber_notebook.ipynb) — visualizations of Sber dataset
 
-* In [`rosbank_notebook.ipynb`](https://github.com/Matteus1904/GPT-like_approach_for_event_sequences/blob/master/eda/rosbank_notebook.ipynb) visualizations of Rosbank dataset
+* [`rosbank_notebook.ipynb`](https://github.com/Matteus1904/GPT-like_approach_for_event_sequences/blob/master/eda/rosbank_notebook.ipynb) — visualizations of Rosbank dataset
 
-* In [`models.py`](/models.py) model pipeline, including its layers, architecture and etc
+* [`models.py`](/models.py) — model pipeline, including its layers, architecture and etc
 
-* In [`dataset.py`](/dataset.py) data preprocessing for model usage
+* [`dataset.py`](/dataset.py) — data preprocessing for model usage
 
 
 ## Prerequisites
