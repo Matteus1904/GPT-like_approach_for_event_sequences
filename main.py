@@ -30,7 +30,7 @@ def get_config_with_dirs(parser, config_ind):
         'amount_bins' : parser[sections[config_ind]]['amount_bins'],
         'validtest_size' : parser[sections[config_ind]]['validtest_size'],
         'test_to_valid_share' : parser[sections[config_ind]]['test_to_valid_share'],
-        'train_batch_size' : parser[sections[config_ind]]['test_to_valid_share'],
+        'train_batch_size' : parser[sections[config_ind]]['train_batch_size'],
         'n_runs' : parser[sections[config_ind]]['n_runs']
     }
 
@@ -73,8 +73,8 @@ if __name__ == '__main__':
         config_name = sections[config_ind]
 
         # data preprocessing
-        dataset_name = float(data_conf['dataset_name'])
-        data_path = float(data_conf['data_path'])
+        dataset_name = data_conf['dataset_name']
+        data_path = data_conf['data_path']
         amount_bins = int(data_conf['amount_bins'])
         validtest_size = float(data_conf['validtest_size'])
         test_to_valid_share = float(data_conf['test_to_valid_share'])
@@ -82,26 +82,26 @@ if __name__ == '__main__':
         n_runs = int(data_conf['n_runs'])
 
         # model hyperparameters
-        mcc_emb_size = int(data_conf['mcc_emb_size'])
-        amount_emb_size = int(data_conf['amount_emb_size'])
-        linear_projection_size = int(data_conf['linear_projection_size'])
-        seq_hidden_size = int(data_conf['seq_hidden_size'])
+        mcc_emb_size = int(model_conf['mcc_emb_size'])
+        amount_emb_size = int(model_conf['amount_emb_size'])
+        linear_projection_size = int(model_conf['linear_projection_size'])
+        seq_hidden_size = int(model_conf['seq_hidden_size'])
 
         # training hyperparameters
-        max_lr_repr = float(data_conf['max_lr_repr'])
-        total_steps_repr = int(data_conf['total_steps_repr'])
-        max_lr_contr = float(data_conf['max_lr_contr'])
-        total_steps_contr = int(data_conf['total_steps_contr'])
-        max_lr_downstream = float(data_conf['max_lr_downstream'])
-        total_steps_downstream = int(data_conf['total_steps_downstream'])
+        max_lr_repr = float(learning_conf['max_lr_repr'])
+        total_steps_repr = int(learning_conf['total_steps_repr'])
+        max_lr_contr = float(learning_conf['max_lr_contr'])
+        total_steps_contr = int(learning_conf['total_steps_contr'])
+        max_lr_downstream = float(learning_conf['max_lr_downstream'])
+        total_steps_downstream = int(learning_conf['total_steps_downstream'])
 
         # other
-        max_epochs_pretrain = int(data_conf['max_epochs_pretrain'])
-        max_epochs_downstream = int(data_conf['max_epochs_downstream'])
+        max_epochs_pretrain = int(params_conf['max_epochs_pretrain'])
+        max_epochs_downstream = int(params_conf['max_epochs_downstream'])
 
-        patience = int(data_conf['patience'])
-        neg_count = int(data_conf['neg_count'])
-        loss_temperature = float(data_conf['loss_temperature'])
+        patience = int(params_conf['patience'])
+        neg_count = int(params_conf['neg_count'])
+        loss_temperature = float(params_conf['loss_temperature'])
 
         source_data = pd.read_csv(data_path)
         if dataset_name == "rosbank":
@@ -113,7 +113,7 @@ if __name__ == '__main__':
 
         mcc_to_id = {mcc: i+1 for i, mcc in enumerate(source_data['small_group'].unique())}
 
-        source_data['amount_rur_bin'] = 1 + KBinsDiscretizer(amount_bins, encode='ordinal', subsample=None).fit_transform(source_data[['amount_rur']]).astype('int')
+        source_data['amount_rur_bin'] = 1 + KBinsDiscretizer(amount_bins, encode='ordinal').fit_transform(source_data[['amount_rur']]).astype('int')
         source_data['small_group'] = source_data['small_group'].map(mcc_to_id)
 
         preprocessor = PandasDataPreprocessor(
