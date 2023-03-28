@@ -47,3 +47,8 @@ curl -OL https://storage.yandexcloud.net/di-datasets/rosbank-ml-contest-boosters
 unzip -j -o rosbank-ml-contest-boosters.pro.zip '*.csv' -d data/rosbank
 mv rosbank-ml-contest-boosters.pro.zip data/rosbank/
 ```
+
+## Model training
+```
+python main.py
+```
